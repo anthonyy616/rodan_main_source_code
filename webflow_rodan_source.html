@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodan Tech - SaaS Agency</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.waves.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#1e293b',
+                        accent: '#4c00b0',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.85) 100%), url('http://static.photos/technology/1200x630/1') center/cover no-repeat;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #CC8899 0%, #0ea5e9 100%);
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: modalopen 0.4s;
+        }
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .modal-header {
+            padding: 20px;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 15px 20px;
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #4c00b0;
+            box-shadow: 0 0 0 3px rgba(76, 0, 176, 0.1);
+        }
+        .btn {
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #4c00b0;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #370080;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+        }
+        .btn-outline:hover {
+            background-color: #f1f5f9;
+        }
+        .switch-form {
+            color: #4c00b0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .switch-form:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-light text-primary">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <img src="http://static.photos/black/200x200/133" alt="Rodan Tech Logo" class="h-10 w-10">
+                    <span class="ml-2 text-xl font-bold">Rodan Tech</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#about" class="text-gray-600 hover:text-accent transition">About</a>
+                    <a href="#services" class="text-gray-600 hover:text-accent transition">Services</a>
+                    <a href="#pricing" class="text-gray-600 hover:text-accent transition">Pricing</a>
+                    <a href="#contact" class="text-gray-600 hover:text-accent transition">Contact</a>
+                    <div class="flex items-center space-x-3">
+                        <button id="loginBtn" class="text-gray-600 hover:text-accent transition font-medium">Login</button>
+                        <button id="signupBtn" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition font-medium">Sign Up</button>
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-600">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-accent">About</a>
+                <a href="#services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-accent">Services</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-accent">Pricing</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-accent">Contact</a>
+                <div class="pt-4 pb-2 border-t border-gray-200">
+                    <button id="mobileLoginBtn" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-accent">Login</button>
+                    <button id="mobileSignupBtn" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-accent text-white hover:bg-purple-600 mt-2">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-xl font-bold text-gray-800">Login to Your Account</h3>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <input type="email" placeholder="Email Address" class="form-input" required>
+                    <input type="password" placeholder="Password" class="form-input" required>
+                    <button type="submit" class="btn btn-primary w-full">Login</button>
+                </form>
+                <div class="mt-4 text-center">
+                    <a href="#" class="text-accent text-sm hover:underline">Forgot Password?</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="text-gray-600">Don't have an account? <span id="showSignupFromLogin" class="switch-form">Sign Up</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-xl font-bold text-gray-800">Create an Account</h3>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <input type="text" placeholder="Full Name" class="form-input" required>
+                    <input type="email" placeholder="Email Address" class="form-input" required>
+                    <input type="password" placeholder="Password" class="form-input" required>
+                    <input type="password" placeholder="Confirm Password" class="form-input" required>
+                    <button type="submit" class="btn btn-primary w-full">Sign Up</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p class="text-gray-600">Already have an account? <span id="showLoginFromSignup" class="switch-form">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg pt-24 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6" data-aos="fade-up">
+                    Welcome to Rodan Tech
+                </h1>
+                <p class="text-xl text-gray-200 max-w-3xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">
+                    SaaS Agency that offers software creation and maintenance services to customers
+                </p>
+                <div class="flex justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#pricing" class="bg-accent text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-600 transition">Get Started</a>
+                    <a href="#about" class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About Us</h2>
+                <div class="w-20 h-1 bg-accent mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right">
+                    <h3 class="text-2xl font-semibold mb-6">SaaS Agency that offers software creation and maintenance services to customers</h3>
+                    <p class="text-gray-600 mb-4">
+                        When you partner with us, you embark on a journey of personalized collaboration and hands-on dedication to your project. Our commitment extends beyond crafting a website; we delve deep into understanding your business, objectives, and target audience to ensure the creation of a website that authentically mirrors your brand and resonates with your customers.
+                    </p>
+                    <p class="text-gray-600 mb-4">
+                        Our team of adept designers and developers will be by your side every step of the way. Alongside our website creation services, we offer SEO and CRO.
+                    </p>
+                    <p class="text-gray-600">
+                        SEO boosts your site's visibility and attracts the right audience, while CRO enhances user experience to increase conversions. Our integrated approach ensures a visually appealing online presence that drives traffic, engages visitors, and converts leads effectively.
+                    </p>
+                </div>
+                <div data-aos="fade-left" class="flex justify-center">
+                    <img src="http://static.photos/office/640x360/42" alt="Team Collaboration" class="rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
+                <div class="w-20 h-1 bg-accent mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i data-feather="code" class="text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Web Development</h3>
+                    <p class="text-gray-600">Custom website creation tailored to your business needs with modern technologies and best practices.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i data-feather="search" class="text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">SEO Optimization</h3>
+                    <p class="text-gray-600">Boost your site's visibility and attract the right audience with our comprehensive SEO strategies.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i data-feather="bar-chart-2" class="text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Conversion Optimization</h3>
+                    <p class="text-gray-600">Enhance user experience to increase conversions and maximize your business potential.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8" data-aos="fade-up">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6">Customized Solutions for Your Unique Business</h3>
+                        <p class="text-gray-600 mb-4">
+                            We understand that every business is unique, which is why we offer a range of customization options to suit your specific needs. Whether you're looking for a simple and clean website or a more complex and feature-rich solution, we have the expertise to bring your vision to life.
+                        </p>
+                        <div class="flex items-center mt-8">
+                            <img src="http://static.photos/people/200x200/77" alt="CEO" class="w-16 h-16 rounded-full">
+                            <div class="ml-4">
+                                <h4 class="font-semibold">Engr. Anthony Ogbuah</h4>
+                                <p class="text-gray-600">Company CEO</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 p-8 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-4">Elevate Your Online Presence with Our SaaS Agency</h4>
+                        <p class="text-gray-600">
+                            Welcome to our SaaS (Software as a Service) agency! Here at <strong>Rodan Tech Services</strong>, we are thrilled to offer our services to small and medium-scale businesses looking to create and maintain their online presence.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Pricing Plans</h2>
+                <div class="w-20 h-1 bg-accent mx-auto"></div>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Choose the perfect plan for your business needs</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Monthly Plan -->
+                <div class="pricing-card bg-gray-50 rounded-xl shadow-lg p-8 border border-gray-200 transition duration-300" data-aos="fade-up">
+                    <h3 class="text-2xl font-bold mb-4">Monthly</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">Starting at $85/mo</span>
+                        <p class="text-gray-600 mt-2">$50 signup fee included</p>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Custom Domain</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>SEO Optimized Website</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Payment Integration</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Google Cloud Hosting</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Cloudflare CDN</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Up to 200K Monthly Visitors</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>AI Copilot Included</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>24/7 Priority Support</span>
+                        </li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-4">Total: $135</p>
+                        <a href="mailto:rodantechservice@gmail.com?subject=Interest%20in%20Monthly%20Plan%20!" class="block bg-accent text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">Contact Us</a>
+                    </div>
+                </div>
+
+                <!-- Quarterly Plan -->
+                <div class="pricing-card bg-white rounded-xl shadow-xl p-8 border-2 border-accent relative transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute top-0 right-0 bg-accent text-white px-4 py-1 rounded-bl-lg rounded-tr-lg">
+                        <span>Popular</span>
+                    </div>
+                
+                    <h3 class="text-2xl font-bold mb-4">Quarterly</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">Starting at $75/mo</span>
+                        <p class="text-gray-600 mt-2">NO signup fee included<br>Billed quarterly</p>
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Everything in Monthly</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Bi-weekly Maintenance</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Conversion-Optimized Checkout</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Customer Accounts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>E-commerce Analytics</span>
+                        </li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-4">10% off monthly</p>
+                        <a href="mailto:rodantechservice@gmail.com?subject=Interest%20in%20Quarterly%20Plan%20!" class="block bg-accent text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">Contact Us</a>
+                    </div>
+                </div>
+
+                <!-- Yearly Plan -->
+                <div class="pricing-card bg-gray-50 rounded-xl shadow-lg p-8 border border-gray-200 transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 bg-accent text-white px-4 py-1 rounded-bl-lg rounded-tr-lg">
+                        <span>Best Value </span>
+                    </div>    
+                    
+                    <h3 class="text-2xl font-bold mb-4">Yearly</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">Starting at $58/mo</span>
+                        <p class="text-gray-600 mt-2">NO signup fee included<br>Billed yearly</p>
+                    
+                    </div>
+                    <ul class="mb-8 space-y-3">
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Everything in Quarterly</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Weekly Maintenance</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>Weekly Updates</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="check-circle" class="text-green-500 mr-2"></i>
+                            <span>24/7 Support</span>
+                        </li>
+                    </ul>
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-4">3 months off</p>
+                        <a href="mailto:rodantechservice@gmail.com?subject=Interest%20in%20Yearly%20Plan%20!" class="block bg-accent text-white py-3 rounded-lg font-semibold hover:bg-purple-600 transition">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-secondary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get in Touch</h2>
+                <div class="w-20 h-1 bg-accent mx-auto"></div>
+                <p class="text-gray-300 mt-4 max-w-2xl mx-auto">Please contact us using any of the following links below and one of our admins will get back to you shortly after.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-primary p-8 rounded-xl" data-aos="fade-up">
+                    <i data-feather="mail" class="text-accent w-12 h-12 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Email Us</h3>
+                    <p class="text-gray-300">rodantechservice@gmail.com</p>
+                </div>
+                <div class="bg-primary p-8 rounded-xl" data-aos="fade-up" data-aos-delay="100">
+                    <i data-feather="phone" class="text-accent w-12 h-12 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Call Us</h3>
+                    <p class="text-gray-300">+90 533 857 9405</p>
+                </div>
+                <div class="bg-primary p-8 rounded-xl" data-aos="fade-up" data-aos-delay="200">
+                    <i data-feather="message-circle" class="text-accent w-12 h-12 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Live Chat</h3>
+                    <p class="text-gray-300">Available 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="http://static.photos/black/200x200/133" alt="Rodan Tech Logo" class="h-10 w-10">
+                        <span class="ml-2 text-xl font-bold">Rodan Tech</span>
+                    </div>
+                    <p class="text-gray-400">Creating and maintaining exceptional online experiences for businesses of all sizes.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-accent transition">Web Development</a></li>
+                        <li><a href="#" class="hover:text-accent transition">SEO Optimization</a></li>
+                        <li><a href="#" class="hover:text-accent transition">CRO Services</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Maintenance</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#about" class="hover:text-accent transition">About Us</a></li>
+                        <li><a href="#pricing" class="hover:text-accent transition">Pricing</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-accent transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+
+                        <a href="#" class="text-gray-400 hover:text-accent transition">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-accent transition">
+                            <i data-feather="linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-accent transition">
+                            <i data-feather="instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Rodan Tech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-opacity-90', 'backdrop-blur-sm');
+            } else {
+                nav.classList.remove('bg-opacity-90', 'backdrop-blur-sm');
+            }
+        });
+
+        // Modal functionality
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileSignupBtn = document.getElementById('mobileSignupBtn');
+        const showSignupFromLogin = document.getElementById('showSignupFromLogin');
+        const showLoginFromSignup = document.getElementById('showLoginFromSignup');
+
+        // Open login modal
+        function openLoginModal() {
+            loginModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Open signup modal
+        function openSignupModal() {
+            signupModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modals
+        function closeModals() {
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners for opening modals
+        loginBtn.addEventListener('click', openLoginModal);
+        signupBtn.addEventListener('click', openSignupModal);
+        mobileLoginBtn.addEventListener('click', openLoginModal);
+        mobileSignupBtn.addEventListener('click', openSignupModal);
+
+        // Switch between modals
+        showSignupFromLogin.addEventListener('click', () => {
+            closeModals();
+            setTimeout(openSignupModal, 300);
+        });
+
+        showLoginFromSignup.addEventListener('click', () => {
+            closeModals();
+            setTimeout(openLoginModal, 300);
+        });
+
+        // Close modal when clicking outside content
+        window.addEventListener('click', (event) => {
+            if (event.target === loginModal) {
+                closeModals();
+            }
+            if (event.target === signupModal) {
+                closeModals();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModals();
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real application, you would handle login logic here
+            alert('Login functionality would be implemented here');
+            closeModals();
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real application, you would handle signup logic here
+            alert('Signup functionality would be implemented here');
+            closeModals();
+        });
+    </script>
+</body>
+</html>
