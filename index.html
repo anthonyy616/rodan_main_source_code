@@ -176,9 +176,9 @@
             </div>
             <div class="modal-body">
                 <form id="loginForm">
-                    <input type="email" placeholder="Email Address" class="form-input" required>
-                    <input type="password" placeholder="Password" class="form-input" required>
-                    <button type="submit" class="btn btn-primary w-full">Login</button>
+                    <input type="email" id="loginEmail" placeholder="Email" required />
+                    <input type="password" id="loginPassword" placeholder="Password" required />
+                    <button type="submit">Login</button>
                 </form>
                 <script>
                      document.addEventListener("DOMContentLoaded", () => {
@@ -233,12 +233,11 @@
             </div>
             <div class="modal-body">
                 <form id="signupForm">
-                    <input type="text" placeholder="Full Name" class="form-input" required>
-                    <input type="email" placeholder="Email Address" class="form-input" required>
-                    <input type="password" placeholder="Password" class="form-input" required>
-                    <input type="password" placeholder="Confirm Password" class="form-input" required>
-                    <button type="submit" class="btn btn-primary w-full">Sign Up</button>
+                    <input type="email" id="signupEmail" placeholder="Email" required />
+                    <input type="password" id="signupPassword" placeholder="Password" required />
+                    <button type="submit">Sign Up</button>
                 </form>
+
                 <!-- This is where supabase API keys are  -->
                 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
                 <script>
