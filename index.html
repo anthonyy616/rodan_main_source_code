@@ -693,16 +693,49 @@
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             // In a real application, you would handle login logic here
-            alert('Login functionality would be implemented here');
-            closeModals();
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password,
+                });
+
+                if (error) {
+                     alert("Login failed: " + error.message);
+                } else {
+                    alert("Login successful!");
+                    closeModals();
+                }
+            });
+
         });
 
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             // In a real application, you would handle signup logic here
-            alert('Signup functionality would be implemented here');
-            closeModals();
+            document.getElementById('signupForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                });
+
+                if (error) {
+                    alert("Signup failed: " + error.message);
+                } else {
+                    alert("Signup successful! Check your email to confirm.");
+                    closeModals();
+                 }
+            });
+
         });
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
