@@ -235,7 +235,18 @@
                     <input type="password" placeholder="Confirm Password" class="form-input" required>
                     <button type="submit" class="btn btn-primary w-full">Sign Up</button>
                 </form>
+                <!-- This is where supabase API keys are  -->
+                <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+                <script>
+                    const { createClient } = supabase;
+                    const supabaseClient = createClient(
+                        "https://dbesgyvhbmtojjlkrwcv.supabase.co",  // <-- your Supabase Project URL
+                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXNneXZoYm10b2pqbGtyd2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5NTQ0MTYsImV4cCI6MjA3MzUzMDQxNn0.bl0vXeuHWVEzs3F4wuQASWEAIOrcLiFlJGyekoMTd1o"  // <-- your anon public key
+                    );
+                </script>
+                             
                  <!-- This is where Javascript (JS) got connected (supabase) -->
+                
                 <script>
                 document.getElementById("signup-form").addEventListener("submit", async (e) => {
                     e.preventDefault();
@@ -262,7 +273,7 @@
                         <title>Document</title>
                     </head>
                     <body>
-                        
+                
                     </body>
                     </html>
 
