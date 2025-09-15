@@ -734,49 +734,44 @@
 <script>
   const { createClient } = supabase;
 
-  // Initialize Supabase
   const supabaseClient = createClient(
     "https://dbesgyvhbmtojjlkrwcv.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXNneXZoYm10b2pqbGtyd2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5NTQ0MTYsImV4cCI6MjA3MzUzMDQxNn0.bl0vXeuHWVEzs3F4wuQASWEAIOrcLiFlJGyekoMTd1o"
   );
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Signup
-    document.getElementById("signupForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
 
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
+    if (signupForm) {
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        console.log("Signing up:", email);
+
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        console.log("Signup response:", data, error);
+
+        if (error) alert("Signup failed: " + error.message);
+        else alert("Signup success. Check your email.");
       });
+    }
 
-      if (error) {
-        alert("Signup failed: " + error.message);
-      } else {
-        alert("Signup successful! Check your email for confirmation.");
-      }
-    });
+    if (loginForm) {
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        console.log("Logging in:", email);
 
-    // Login
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        console.log("Login response:", data, error);
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
+        if (error) alert("Login failed: " + error.message);
+        else alert("Login success!");
       });
-
-      if (error) {
-        alert("Login failed: " + error.message);
-      } else {
-        alert("Login successful!");
-        console.log("User session:", data.session);
-      }
-    });
+    }
   });
 </script>
 </body>
