@@ -168,6 +168,13 @@
         </div>
     </nav>
 
+        <!-- Profile Section -->
+        <div id="profileSection" style="display:none;">
+            <p id="profileEmail"></p>
+            <button id="logoutBtn">Logout</button>
+        </div>
+
+
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
@@ -737,6 +744,45 @@
     "https://dbesgyvhbmtojjlkrwcv.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiZXNneXZoYm10b2pqbGtyd2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5NTQ0MTYsImV4cCI6MjA3MzUzMDQxNn0.bl0vXeuHWVEzs3F4wuQASWEAIOrcLiFlJGyekoMTd1o"
   );
+<script>
+  // Check session on load
+  document.addEventListener("DOMContentLoaded", async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (session) {
+      showProfile(session.user);
+    }
+
+    // Listen for login form
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        alert("Login failed: " + error.message);
+      } else {
+        alert("Login successful!");
+        showProfile(data.user);
+      }
+    });
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      document.getElementById("profileSection").style.display = "none";
+      alert("You have been logged out.");
+    });
+  });
+
+  // Helper function
+  function showProfile(user) {
+    document.getElementById("profileEmail").innerText = "Logged in as: " + user.email;
+    document.getElementById("profileSection").style.display = "block";
+  }
+</script>
 
   document.addEventListener("DOMContentLoaded", () => {
     const signupForm = document.getElementById("signupForm");
