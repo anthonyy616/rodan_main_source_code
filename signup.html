@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Hairs By TKM</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .signup-card {
+            background-color: #1a1a1a;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 24rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        .input-field {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border: 1px solid #4a4a4a;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #a855f7; /* Purple border on focus */
+        }
+        .continue-btn {
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+        }
+        .social-btn {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            width: 100%;
+        }
+        .badge {
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 0.6rem; /* Smaller as requested */
+            padding: 0.2rem 0.4rem;
+            border-radius: 9999px;
+            margin-left: 0.5rem;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 1rem 0;
+        }
+        .separator::before, .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #4a4a4a;
+        }
+        .separator::before {
+            margin-right: 0.5rem;
+        }
+        .separator::after {
+            margin-left: 0.5rem;
+        }
+        .login-link {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .login-link a {
+            color: #a855f7;
+            text-decoration: none;
+        }
+        #status {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Signup Card -->
+    <div class="signup-card">
+        <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
+        
+        <form id="signup-form" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-gray-400 mb-2">First Name</label>
+                    <input type="text" id="first_name" required 
+                           class="input-field">
+                </div>
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-gray-400 mb-2">Last Name</label>
+                    <input type="text" id="last_name" required 
+                           class="input-field">
+                </div>
+            </div>
+            
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email Address</label>
+                <input type="email" id="email" required 
+                       class="input-field">
+            </div>
+            
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-400 mb-2">Phone Number (Optional)</label>
+                <input type="tel" id="phone" placeholder="+2348000000000"
+                       class="input-field">
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-400 mb-2">Password</label>
+                <input type="password" id="password" required minlength="6"
+                       class="input-field">
+            </div>
+            
+            <button type="submit" class="continue-btn">
+                Create Account
+            </button>
+        </form>
+        
+        <div class="separator">OR</div>
+        
+        <button class="social-btn mb-2 relative">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png" alt="Google logo" class="w-5 h-5 mr-2">
+            Continue with Google
+            <span class="badge absolute right-2 top-1/6 transform -translate-y-1/2">Last used</span>
+        </button>
+        
+        <button class="social-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/833px-Apple_logo_black.svg.png" alt="Apple logo" class="w-5 h-5 mr-2 invert">
+            Continue with Apple
+        </button>
+        
+        <p class="text-center login-link mt-4">Already have an account? <a href="login.html">Login here</a></p>
+        
+        <div id="status" class="mt-4 p-3 rounded-lg text-center hidden"></div>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({ duration: 800, easing: 'ease-in-out' });
+        }
+
+        // Supabase Configuration - USE YOUR ACTUAL CREDENTIALS
+        const supabaseUrl = 'https://nkmxznymrpvgzlznprmu.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rbXh6bnltcnB2Z3psem5wcm11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5MDkyMTcsImV4cCI6MjA3NTQ4NTIxN30.5ZUz6WaFL-GTr72PXuCvG-4Xq_rplKZ_E0y3iI2HLmQ';
+        
+        // Initialize Supabase client correctly
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        });
+
+        // Signup function
+        async function signUpUser(event) {
+            event.preventDefault();
+            
+            const first_name = document.getElementById('first_name').value.trim();
+            const last_name = document.getElementById('last_name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const statusDiv = document.getElementById('status');
+
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+
+            try {
+                //  1: Sign up w/ Supabase Auth
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            first_name: first_name,
+                            last_name: last_name,
+                            phone: phone
+                        }
+                    }
+                });
+
+                if (authError) {
+                    throw new Error(authError.message);
+                }
+
+                if (authData.user) {
+                // Step 2: Create profile in profiles table
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .insert({
+                            id: authData.user.id,
+                            first_name: first_name,
+                            last_name: last_name,
+                            phone: phone,
+                            email: email,
+                            created_at: new Date().toISOString()
+                        });
+
+                if (profileError) {
+                    console.warn('Profile creation warning:', profileError.message);
+                    // Continue anyway - the user is created in auth, profile can be updated later
+                }
+
+                // Store profile immediately in localStorage
+                localStorage.setItem('userProfile', JSON.stringify({
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    phone: phone
+                }));
+
+                // Show success message
+                statusDiv.className = 'mt-4 p-3 rounded-lg text-center bg-green-100 text-green-700';
+                statusDiv.innerHTML = `
+                    <strong>Success!</strong> Account created successfully. 
+                    ${authData.session ? 'You are now logged in.' : 'Please check your email for verification.'}
+                    <br>Redirecting to homepage...
+                `;
+                statusDiv.classList.remove('hidden');
+
+                // Redirect to homepage immediately (no delay)
+                window.location.href = 'homepage.html';
+            }
+
+            } catch (error) {
+                statusDiv.className = 'mt-4 p-3 rounded-lg text-center bg-red-100 text-red-700';
+                statusDiv.textContent = `Error: ${error.message}`;
+                statusDiv.classList.remove('hidden');
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Event listener
+        document.getElementById('signup-form').addEventListener('submit', signUpUser);
+
+        // Check if user is already logged in
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                window.location.href = 'homepage.html';
+            }
+        });
+        
+        // OAuth Event Listeners for Google and Apple
+        document.querySelectorAll('.social-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const provider = btn.querySelector('img[alt="Google logo"]') ? 'google' : 'apple';
+            const { error } = await supabase.auth.signInWithOAuth({
+            provider: provider,
+            options: {
+                redirectTo: window.location.origin + '/homepage.html'  // Redirect after auth
+            }
+            });
+            if (error) {
+            console.error('OAuth Error:', error.message);
+            // Optional: Show error in #status div
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'mt-4 p-3 rounded-lg text-center bg-red-100 text-red-700';
+            statusDiv.textContent = `Error: ${error.message}`;
+            statusDiv.classList.remove('hidden');
+            }
+        });
+        });
+    </script>
+    <script src="auth.js" defer></script>
+</body>
+</html>
